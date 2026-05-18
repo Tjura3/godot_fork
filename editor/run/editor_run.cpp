@@ -310,7 +310,11 @@ EditorRun::WindowPlacement EditorRun::get_window_placement() {
 
 		switch (window_placement) {
 			case 0: { // top left
+				//placement.position = screen_rect.position;
+				// Explore DisplayServer to understand what I need to offset.
+				//Size2i test1 = DisplayServer::get_singleton()->
 				placement.position = screen_rect.position;
+
 			} break;
 			case 1: { // centered
 				placement.position = (screen_rect.position) + ((screen_rect.size - placement.size) / 2).floor();

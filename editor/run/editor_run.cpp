@@ -326,30 +326,31 @@ EditorRun::WindowPlacement EditorRun::get_window_placement() {
 				//Vector2i window_get_size_with_decorations(window_id: int = 0) const 
 				
 
-
+				
+				//This attempted to use a lambda to make a dummy window to get pixels
+				/*
 				placement.position = screen_rect.position;
-
-				//attempting a lambda to make a dummy thing
 				auto get_title_bar_height = [](int p_screen) -> int {
 					if (!DisplayServer::get_singleton()->has_feature(DisplayServerEnums::FEATURE_SUBWINDOWS)) {
 						return 0;
 					}
-					//Use a dummy to get the pixels?
 					Size2i client_size = Size2i(500, 500);
 					Size2i decorated_size = DisplayServer::get_singleton()->window_get_size_with_decorations();
 
-					// The difference reveals the total padding (top title bar + bottom border + side frames)
 					int total_vertical_padding = decorated_size.y - client_size.y;
 
-					//Deal with the bottom side size boarder
 					int side_padding = (decorated_size.x - client_size.x) / 2;
 					int isolated_title_bar = total_vertical_padding - side_padding;
 
 					return MAX(0, isolated_title_bar);
 				};
-
-				// Add the exact physical pixel offset calculated directly from the OS environment
 				placement.position.y += get_title_bar_height(placement.screen);
+				*/
+
+				placement.position = screen_rect.position;
+				//I just need to find a way to get the screen size of the run window.
+				Size2i decorated_size = DisplayServer::get_singleton()->window_get_size_with_decorations();
+				
 
 
 

@@ -313,7 +313,14 @@ EditorRun::WindowPlacement EditorRun::get_window_placement() {
 				//placement.position = screen_rect.position;
 				// Explore DisplayServer to understand what I need to offset.
 				//Size2i test1 = DisplayServer::get_singleton()->
+				
 				placement.position = screen_rect.position;
+				float title_bar_offset = 32.0f;
+				float editor_scale = EDITOR_GET("interface/editor/display_scale");
+				if (editor_scale <= 0.0f) {
+					editor_scale = 1.0f;
+				}
+				placement.position.y += (title_bar_offset * editor_scale);
 
 			} break;
 			case 1: { // centered

@@ -314,13 +314,44 @@ EditorRun::WindowPlacement EditorRun::get_window_placement() {
 				// Explore DisplayServer to understand what I need to offset.
 				//Size2i test1 = DisplayServer::get_singleton()->
 				
-				placement.position = screen_rect.position;
+				/*placement.position = screen_rect.position;
 				float title_bar_offset = 32.0f;
 				float editor_scale = EDITOR_GET("interface/editor/display_scale");
 				if (editor_scale <= 0.0f) {
 					editor_scale = 1.0f;
 				}
-				placement.position.y += (title_bar_offset * editor_scale);
+				placement.position.y += (title_bar_offset * editor_scale);*/
+
+				//Vector2i window_get_size(window_id: int = 0) const
+				//Vector2i window_get_size_with_decorations(window_id: int = 0) const 
+				
+
+
+				placement.position = screen_rect.position;
+
+				//attempting a lambda to make a dummy thing
+				auto get_title_bar_height = [](int p_screen) -> int {
+					if (!DisplayServer::get_singleton()->has_feature(DisplayServerEnums::FEATURE_SUBWINDOWS)) {
+						return 0;
+					}
+					//Use a dummy to get the pixels?
+					Size2i client_size = Size2i(500, 500);
+					Size2i decorated_size = DisplayServer::get_singleton()->window_get_size_with_decorations();
+
+					// The difference reveals the total padding (top title bar + bottom border + side frames)
+					int total_vertical_padding = decorated_size.y - client_size.y;
+
+					//Deal with the bottom side size boarder
+					int side_padding = (decorated_size.x - client_size.x) / 2;
+					int isolated_title_bar = total_vertical_padding - side_padding;
+
+					return MAX(0, isolated_title_bar);
+				};
+
+				// Add the exact physical pixel offset calculated directly from the OS environment
+				placement.position.y += get_title_bar_height(placement.screen);
+
+
 
 			} break;
 			case 1: { // centered
